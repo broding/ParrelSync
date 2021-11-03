@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using Unity.EditorCoroutines.Editor;
+using System.Collections.Generic;
+using System.Collections;
 using System.Diagnostics;
 using UnityEngine;
 using UnityEditor;
@@ -151,6 +153,12 @@ namespace ParrelSync {
 
             UnityEditor.EditorPrefs.SetBool("DirectoryMonitoring", false);
             ClonesManager.StartHiddenConsoleProcess(fileName, args);
+            EditorCoroutineUtility.StartCoroutineOwnerless(ResetDirectoryMonitoringRoutine());
+        }
+
+        private static IEnumerator ResetDirectoryMonitoringRoutine() {
+            yield return new EditorWaitForSeconds(10f);
+            UnityEditor.EditorPrefs.SetBool("DirectoryMonitoring", true);
         }
 
         private static string GetApplicationPath() {
