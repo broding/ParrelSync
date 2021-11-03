@@ -148,6 +148,8 @@ namespace ParrelSync {
             string fileName = GetApplicationPath();
             string args = "-projectPath \"" + projectPath + "\"";
             Debug.Log("Opening project \"" + fileName + " " + args + "\"");
+
+            UnityEditor.EditorPrefs.SetBool("DirectoryMonitoring", false);
             ClonesManager.StartHiddenConsoleProcess(fileName, args);
         }
 
@@ -502,8 +504,8 @@ namespace ParrelSync {
 
             /// Copy all files from the source.
             foreach (FileInfo file in source.GetFiles()) {
-                // Ensure file exists before continuing.
-                if (file.Exists) { continue; }
+                // Ensure file exists.
+                if (!file.Exists) { continue; }
 
                 try {
                     file.CopyTo(Path.Combine(destination.ToString(), file.Name), true);
